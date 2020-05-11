@@ -14,7 +14,7 @@ We also intend to integrate Agora.io video and audio calling as a
 standard (optional) feature. If you like or use the code please join our
 little mitzvah and help contribute!
 
-# SERVER
+# FLUTTER CLIENT
 
 This is the codebase for the Flutter app, you can find the Flutter server
 [here.](https://github.com/jjeffus/mayim-server "Mayim Server Repository")
