@@ -42,4 +42,4 @@ https://github.com/Jamalianpour/SimpleChatUI
 
 # COPYRIGHT
 
-&copy; 2020 Janet Braswell-Jeffus and Andrew Carroll
+&copy; 2020 Janet Braswell-Jeffus
