@@ -1,3 +1,5 @@
+[Mayim Chat](/graphics/mayim_logo.png?raw=true "Mayim Chat")
+
 # README
 
 So many apps need some kind of chat functionality these days. But what
@@ -14,8 +16,8 @@ little mitzvah and help contribute!
 
 # SERVER
 
-This is the codebase for the server, you can find the Flutter client
-[here.](https://github.com/jjeffus/mayim-app "Mayim App Repository")
+This is the codebase for the Flutter app, you can find the Flutter server
+[here.](https://github.com/jjeffus/mayim-server "Mayim Server Repository")
 
 # FEATURES
 
@@ -36,7 +38,6 @@ https://github.com/Jamalianpour/SimpleChatUI
 ## Screenshots
 
 <img align = "center" src="screenshots/screenShot1.jpg" width=32%> <img align = "center" src="screenshots/screenShot2.jpg" width=32%> <img align = "center" src="screenshots/screenShot3.jpg" width=32%>
-![Alt text](/graphics/mayim_logo.png?raw=true "Mayim Chat")
 
 
 # COPYRIGHT
