@@ -1,5 +1,5 @@
-name: simple_chat_application
-description: A new Flutter project.
+name: mayim
+description: A flutter chat using rails action cable.
 
 version: 1.0.0+1
 

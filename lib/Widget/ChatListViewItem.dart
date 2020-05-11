@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:simple_chat_application/Global/Colors.dart' as myColors;
-import 'package:simple_chat_application/View/ChatPageView.dart';
+import 'package:mayim/Global/Colors.dart' as myColors;
+import 'package:mayim/View/ChatPageView.dart';
 
 class ChatListViewItem extends StatelessWidget {
   final AssetImage image;

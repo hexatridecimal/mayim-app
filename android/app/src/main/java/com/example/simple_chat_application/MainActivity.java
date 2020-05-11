@@ -1,4 +1,4 @@
-package com.example.simple_chat_application;
+package com.awd.mayim;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

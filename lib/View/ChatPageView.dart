@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:simple_chat_application/Global/Colors.dart' as myColors;
-import 'package:simple_chat_application/Widget/ReceivedMessageWidget.dart';
-import 'package:simple_chat_application/Widget/SendedMessageWidget.dart';
+import 'package:mayim/Global/Colors.dart' as myColors;
+import 'package:mayim/Widget/ReceivedMessageWidget.dart';
+import 'package:mayim/Widget/SendedMessageWidget.dart';
 
 class ChatPageView extends StatefulWidget {
   final String username;

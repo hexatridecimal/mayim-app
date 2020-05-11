@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simple_chat_application/Global/Colors.dart' as myColors;
+import 'package:mayim/Global/Colors.dart' as myColors;
 
 class SendedMessageWidget extends StatelessWidget {
   final String content;
