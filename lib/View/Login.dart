@@ -56,6 +56,7 @@ class _LoginPageState extends State<LoginPage> {
           _isLoading = false;
         });
         sharedPreferences.setString("token", response.headers['authorization']);
+        sharedPreferences.setString("user", response.body);
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => ChatListPageView()), (Route<dynamic> route) => false);
       }
     }

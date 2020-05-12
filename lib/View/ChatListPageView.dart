@@ -17,6 +17,7 @@ class ChatListPageView extends StatefulWidget {
 class _ChatListPageViewState extends State<ChatListPageView> {
   bool isLoading = true;
   List online;
+  var userProfile = null;
   SharedPreferences sharedPreferences;
 
   @override
@@ -34,9 +35,10 @@ class _ChatListPageViewState extends State<ChatListPageView> {
 
   getOnlineUsers() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    if(sharedPreferences.getString("token") != null) {
+    if(sharedPreferences.getString("token") != null && sharedPreferences.getString("user") != null) {
+      userProfile = json.decode(sharedPreferences.getString("user"));
       var response = await http.get(
-          Uri.encodeFull("http://192.168.1.28:3000/online"),
+          Uri.encodeFull("http://192.168.1.28:3000/api/v1/users"),
           headers: {
             "Accept": "application/json",
             "Authorization": sharedPreferences.getString("token")
@@ -44,16 +46,17 @@ class _ChatListPageViewState extends State<ChatListPageView> {
       );
 
       this.setState(() {
+        print('Response status: ${response.statusCode}');
+        print('Response body: ${response.body}');
+        print('Response authorization: ${response.headers['authorization']}');
         online = json.decode(response.body);
       });
-
-      print(online[1]["name"]);
     }
   }
 
   Future<void> onJoin() async {
     // update input validation
-    setState(() {
+    /* setState(() {
       _channelController.text.isEmpty
           ? _validateError = true
           : _validateError = false;
@@ -70,7 +73,7 @@ class _ChatListPageViewState extends State<ChatListPageView> {
           ),
         ),
       );
-    }
+    } */
   }
 
   Future<void> _handleCameraAndMic() async {
@@ -120,72 +123,19 @@ class _ChatListPageViewState extends State<ChatListPageView> {
                     topLeft: Radius.circular(15.0),
                     topRight: Radius.circular(15.0),
                   )),
-              child: ListView(
-                children: <Widget>[
-                  ChatListViewItem(
-                    hasUnreadMessage: true,
-                    image: AssetImage('assets/images/person1.jpg'),
-                    lastMessage:
-                        "Lorem ipsum dolor sit amet. Sed pharetra ante a blandit ultrices.",
-                    name: "Bree Jarvis",
-                    newMesssageCount: 8,
-                    time: "19:27 PM",
-                  ),
-                  ChatListViewItem(
-                    hasUnreadMessage: true,
-                    image: AssetImage('assets/images/person2.png'),
-                    lastMessage:
-                        "Lorem ipsum dolor sit amet. Sed pharetra ante a blandit ultrices.",
-                    name: "Alex",
-                    newMesssageCount: 5,
-                    time: "19:27 PM",
-                  ),
-                  ChatListViewItem(
-                    hasUnreadMessage: false,
-                    image: AssetImage('assets/images/person3.jpg'),
-                    lastMessage:
-                        "Lorem ipsum dolor sit amet. Sed pharetra ante a blandit ultrices.",
-                    name: "Carson Sinclair",
-                    newMesssageCount: 0,
-                    time: "19:27 PM",
-                  ),
-                  ChatListViewItem(
-                    hasUnreadMessage: false,
-                    image: AssetImage('assets/images/person4.png'),
-                    lastMessage:
-                        "Lorem ipsum dolor sit amet. Sed pharetra ante a blandit ultrices.",
-                    name: "Lucian Guerra",
-                    newMesssageCount: 0,
-                    time: "19:27 PM",
-                  ),
-                  ChatListViewItem(
-                    hasUnreadMessage: false,
-                    image: AssetImage('assets/images/person5.jpg'),
-                    lastMessage:
-                        "Lorem ipsum dolor sit amet. Sed pharetra ante a blandit ultrices.",
-                    name: "Sophia-Rose Bush",
-                    newMesssageCount: 0,
-                    time: "19:27 PM",
-                  ),
-                  ChatListViewItem(
-                    hasUnreadMessage: false,
-                    image: AssetImage('assets/images/person6.jpg'),
-                    lastMessage:
-                        "Lorem ipsum dolor sit amet. Sed pharetra ante a blandit ultrices.",
-                    name: "Mohammad",
-                    newMesssageCount: 0,
-                    time: "19:27 PM",
-                  ),
-                  ChatListViewItem(
-                    hasUnreadMessage: false,
-                    image: AssetImage('assets/images/person7.jpg'),
-                    lastMessage:
-                        "Lorem ipsum dolor sit amet. Sed pharetra ante a blandit ultrices.",
-                    name: "Jimi Cooke",
-                    newMesssageCount: 0,
-                    time: "19:27 PM",
-                  ),
-                ],
+              child: new ListView.builder(
+                itemCount: online == null ? 0 : online.length,
+                itemBuilder: (BuildContext context, int index){
+                  return new ChatListViewItem(
+                      hasUnreadMessage: true,
+                      image: AssetImage('assets/images/person1.jpg'),
+                      lastMessage:
+                          "Lorem ipsum dolor sit amet. Sed pharetra ante a blandit ultrices.",
+                      name: online[index]["name"],
+                      newMesssageCount: 8,
+                      time: online[index]["last_login"],
+                      );
+                },
               ),
             ),
           ),
