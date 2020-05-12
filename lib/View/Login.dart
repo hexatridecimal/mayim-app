@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mayim/Settings.dart';
 import 'package:mayim/View/ChatListPageView.dart';
 
 class LoginPage extends StatefulWidget {
@@ -45,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
     };
     var jsonResponse = null;
 
-    var response = await http.post("http://192.168.1.28:3000/login", body: data);
+    var response = await http.post(APP_SERVER + "/login", body: data);
     if(response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
       print('Response status: ${response.statusCode}');

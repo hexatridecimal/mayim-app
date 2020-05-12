@@ -4,6 +4,7 @@ import 'package:mayim/Global/Colors.dart' as myColors;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
+import 'package:mayim/Settings.dart';
 import 'package:mayim/View/Login.dart';
 import 'package:mayim/View/Call.dart';
 import 'package:mayim/Widget/ChatListViewItem.dart';
@@ -33,12 +34,34 @@ class _ChatListPageViewState extends State<ChatListPageView> {
     });
   }
 
+  signOut() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    if(sharedPreferences.getString("token") != null) {
+      // userProfile = json.decode(sharedPreferences.getString("user"));
+      var response = await http.delete(
+          Uri.encodeFull(APP_SERVER + "/logout"),
+          headers: {
+            "Accept": "application/json",
+            "Authorization": sharedPreferences.getString("token")
+          }
+      );
+
+      this.setState(() {
+        print('Logout');
+        print('Response status: ${response.statusCode}');
+        print('Response body: ${response.body}');
+        sharedPreferences.clear();
+        sharedPreferences.commit();
+      });
+    }
+  }
+
   getOnlineUsers() async {
     sharedPreferences = await SharedPreferences.getInstance();
     if(sharedPreferences.getString("token") != null && sharedPreferences.getString("user") != null) {
       userProfile = json.decode(sharedPreferences.getString("user"));
       var response = await http.get(
-          Uri.encodeFull("http://192.168.1.28:3000/api/v1/users"),
+          Uri.encodeFull(APP_SERVER + "/api/v1/users"),
           headers: {
             "Accept": "application/json",
             "Authorization": sharedPreferences.getString("token")
@@ -107,8 +130,7 @@ class _ChatListPageViewState extends State<ChatListPageView> {
             actions: <Widget>[
               FlatButton(
                 onPressed: () {
-                  sharedPreferences.clear();
-                  sharedPreferences.commit();
+                  signOut();
                   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => LoginPage()), (Route<dynamic> route) => false);
                 },
                 child: Text("Log Out", style: TextStyle(color: Colors.white)),
@@ -127,8 +149,8 @@ class _ChatListPageViewState extends State<ChatListPageView> {
                 itemCount: online == null ? 0 : online.length,
                 itemBuilder: (BuildContext context, int index){
                   return new ChatListViewItem(
-                      hasUnreadMessage: true,
-                      image: AssetImage('assets/images/person1.jpg'),
+                      hasUnreadMessage: false,
+                      image: new NetworkImage(APP_SERVER + online[index]["avatar_url"]),
                       lastMessage:
                           "Lorem ipsum dolor sit amet. Sed pharetra ante a blandit ultrices.",
                       name: online[index]["name"],
@@ -143,14 +165,11 @@ class _ChatListPageViewState extends State<ChatListPageView> {
             child: new ListView(
                   children: <Widget>[
                     new UserAccountsDrawerHeader(
-                      accountName: new Text('Janet Braswell-Jeffus'),
-                      accountEmail: new Text('janet@may-im.com'),
-                      // decoration: new BoxDecoration(
-                      //   image: new DecorationImage(
-                      //     fit: BoxFit.fill,
-                      //    // image: AssetImage('img/estiramiento.jpg'),
-                      //   )
-                      // ),
+                      accountName: new Text(userProfile["name"]),
+                      accountEmail: new Text(userProfile["email"]),
+                      currentAccountPicture: new CircleAvatar(
+                        backgroundImage: new NetworkImage(APP_SERVER + userProfile["avatar_url"]),
+                      )
                     ),
                     new Divider(),
                     // new ListTile(

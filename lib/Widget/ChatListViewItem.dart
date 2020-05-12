@@ -4,7 +4,7 @@ import 'package:mayim/Global/Colors.dart' as myColors;
 import 'package:mayim/View/ChatPageView.dart';
 
 class ChatListViewItem extends StatelessWidget {
-  final AssetImage image;
+  final NetworkImage image;
   final String name;
   final String lastMessage;
   final String time;
