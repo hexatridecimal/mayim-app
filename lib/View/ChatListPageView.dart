@@ -34,7 +34,7 @@ class _ChatListPageViewState extends State<ChatListPageView> {
     sharedPreferences = await SharedPreferences.getInstance();
     if(sharedPreferences.getString("token") != null) {
       var response = await http.get(
-          Uri.encodeFull("http://192.168.1.15:3000/online"),
+          Uri.encodeFull("http://192.168.1.28:3000/online"),
           headers: {
             "Accept": "application/json",
             "Authorization": sharedPreferences.getString("token")

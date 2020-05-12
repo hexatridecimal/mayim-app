@@ -27,7 +27,7 @@ class IndexState extends State<IndexPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Surgery Revolution'),
+        title: Text('Mayim Chat'),
       ),
       body: Center(
         child: Container(

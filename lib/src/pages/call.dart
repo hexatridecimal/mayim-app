@@ -297,7 +297,7 @@ class _CallPageState extends State<CallPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Surgery Revolution'),
+        title: Text('Mayim Chat'),
       ),
       backgroundColor: Colors.black,
       body: Center(

@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
     };
     var jsonResponse = null;
 
-    var response = await http.post("http://192.168.1.15:3000/login", body: data);
+    var response = await http.post("http://192.168.1.28:3000/login", body: data);
     if(response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
       print('Response status: ${response.statusCode}');
@@ -130,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       margin: EdgeInsets.only(top: 50.0),
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
-      child: Text("Surgery Revolution",
+      child: Text("Mayim Chat",
           style: TextStyle(
               color: Colors.white70,
               fontSize: 40.0,
