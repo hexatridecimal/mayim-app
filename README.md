@@ -4,11 +4,14 @@
 
 So many apps need some kind of chat functionality these days. But what
 do you do if you want the freedom to avoid vendor lock-in? There are
-multitudes of Firebase based chat app starters. What we want to do is
-make something high quality that can be deployed on a variety of cloud
-providers easily. Mayim means water in Hebrew, why would we use Mayim?
-Well, what do you put out a fire with? May-I-M as in "may instant
-messaging be free and unencumbered."
+multitudes of Firebase based chat app starters. If you have ever used
+Upcloud or Digital Ocean you may noy want to go back to a provider like
+Google or AWS who do not offer support unless you pay high support fees
+What we want to do is make something high quality that can be deployed
+on a variety of cloud providers easily. Mayim means water in Hebrew,
+why would we use Mayim? Well, what do you put out a fire with?
+
+May-I-M as in "may instant messaging be free and unencumbered."
 
 We also intend to integrate Agora.io video and audio calling as a
 standard (optional) feature. If you like or use the code please join our

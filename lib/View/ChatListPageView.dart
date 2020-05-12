@@ -1,5 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mayim/Global/Colors.dart' as myColors;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:mayim/src/pages/login.dart';
 import 'package:mayim/Widget/ChatListViewItem.dart';
 import 'package:mayim/Widget/Loading.dart';
 
@@ -10,16 +14,48 @@ class ChatListPageView extends StatefulWidget {
 
 class _ChatListPageViewState extends State<ChatListPageView> {
   bool isLoading = true;
+  List online;
+  SharedPreferences sharedPreferences;
 
   @override
   void initState() {
     super.initState();
+    checkLoginStatus();
+    getOnlineUsers();
 
     Future.delayed(const Duration(seconds: 2), () {
       setState(() {
         isLoading = false;
       });
     });
+  }
+
+  getOnlineUsers() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    if(sharedPreferences.getString("token") != null) {
+      var response = await http.get(
+          Uri.encodeFull("http://192.168.1.15:3000/online"),
+          headers: {
+            "Accept": "application/json",
+            "Authorization": sharedPreferences.getString("token")
+          }
+      );
+
+      this.setState(() {
+        online = json.decode(response.body);
+      });
+
+      print(online[1]["name"]);
+    }
+  }
+
+
+
+  checkLoginStatus() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    if(sharedPreferences.getString("token") == null) {
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => LoginPage()), (Route<dynamic> route) => false);
+    }
   }
 
   @override
@@ -36,10 +72,17 @@ class _ChatListPageViewState extends State<ChatListPageView> {
               color: Colors.white,
             ),
             centerTitle: true,
-            title: Text(
-              'chats',
-              style: TextStyle(color: Colors.white, fontSize: 18),
-            ),
+            title: Text("Mayim Chat", style: TextStyle(color: Colors.white)),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  sharedPreferences.clear();
+                  sharedPreferences.commit();
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => LoginPage()), (Route<dynamic> route) => false);
+                },
+                child: Text("Log Out", style: TextStyle(color: Colors.white)),
+              ),
+            ],
           ),
           body: Container(
             child: Container(
@@ -118,8 +161,41 @@ class _ChatListPageViewState extends State<ChatListPageView> {
               ),
             ),
           ),
+          drawer: Drawer(
+            child: new ListView(
+                  children: <Widget>[
+                    new UserAccountsDrawerHeader(
+                      accountName: new Text('Janet Braswell-Jeffus'),
+                      accountEmail: new Text('janet@may-im.com'),
+                      // decoration: new BoxDecoration(
+                      //   image: new DecorationImage(
+                      //     fit: BoxFit.fill,
+                      //    // image: AssetImage('img/estiramiento.jpg'),
+                      //   )
+                      // ),
+                    ),
+                    new Divider(),
+                    // new ListTile(
+                    //   title: new Text("Add data"),
+                    //   trailing: new Icon(Icons.fitness_center),
+                    //   onTap: () => Navigator.of(context).push(new MaterialPageRoute(
+                    //     builder: (BuildContext context) => AddData(),
+                    //   )),
+                    // ),
+                    // new Divider(),
+                    // new ListTile(
+                    //   title: new Text("Mostrar listado"),
+                    //   trailing: new Icon(Icons.help),
+                    //   onTap: () => Navigator.of(context).push(new MaterialPageRoute(
+                    //     builder: (BuildContext context) => ShowData(),
+                    //   )),
+                    // ),
+                  ],
+                ),
+          ),
         ),
       );
     }
   }
 }
+
