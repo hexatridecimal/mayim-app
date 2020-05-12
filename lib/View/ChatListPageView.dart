@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mayim/Global/Colors.dart' as myColors;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
-import 'package:mayim/src/pages/login.dart';
+import 'package:mayim/View/Login.dart';
+import 'package:mayim/View/Call.dart';
 import 'package:mayim/Widget/ChatListViewItem.dart';
 import 'package:mayim/Widget/Loading.dart';
 
@@ -49,7 +51,33 @@ class _ChatListPageViewState extends State<ChatListPageView> {
     }
   }
 
+  Future<void> onJoin() async {
+    // update input validation
+    setState(() {
+      _channelController.text.isEmpty
+          ? _validateError = true
+          : _validateError = false;
+    });
+    if (_channelController.text.isNotEmpty) {
+      // await for camera and mic permissions before pushing video page
+      await _handleCameraAndMic();
+      // push video page with given channel name
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CallPage(
+            channelName: _channelController.text,
+          ),
+        ),
+      );
+    }
+  }
 
+  Future<void> _handleCameraAndMic() async {
+    await PermissionHandler().requestPermissions(
+      [PermissionGroup.camera, PermissionGroup.microphone],
+    );
+  }
 
   checkLoginStatus() async {
     sharedPreferences = await SharedPreferences.getInstance();

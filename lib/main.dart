@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mayim/src/pages/login.dart';
 import 'package:mayim/Global/Colors.dart' as myColors;
+import 'package:mayim/View/Login.dart';
 import 'package:mayim/View/ChatListPageView.dart';
 
 void main() => runApp(MyApp());
