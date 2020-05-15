@@ -28,6 +28,12 @@ so place the app launcher icon you have in /graphics.
 
 `find . -name "*.bak" -type f -delete`
 
+9. Start an emulator or attach a device and then:
+
+`flutter run`
+
+VOILA! You should be able to login with the accounts in
+mayim-server/db/seeds.rb.
 
 # COPYRIGHT
 
