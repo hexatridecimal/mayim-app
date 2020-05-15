@@ -1,14 +1,19 @@
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:mayim/Global/Colors.dart' as myColors;
 import 'package:mayim/Widget/ReceivedMessageWidget.dart';
 import 'package:mayim/Widget/SendedMessageWidget.dart';
+import 'package:mayim/View/CallPage.dart';
 
 class ChatPageView extends StatefulWidget {
-  final String username;
+  final String conversation;
+  final String name;
 
   const ChatPageView({
     Key key,
-    this.username,
+    this.conversation,
+    this.name,
   }) : super(key: key);
 
   @override
@@ -71,6 +76,27 @@ class _ChatPageViewState extends State<ChatPageView> {
     ));
   }
 
+  Future<void> _handleCameraAndMic() async {
+    await PermissionHandler().requestPermissions(
+      [PermissionGroup.camera, PermissionGroup.microphone],
+    );
+  }
+
+  Future<void> placeCall(String conversation) async {
+    setState(() {
+    });
+    await _handleCameraAndMic();
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CallPage(
+          channelName: conversation,
+        ),
+      ),
+    );
+  }
+
+
   @override
   void dispose() {
     super.dispose();
@@ -110,45 +136,58 @@ class _ChatPageViewState extends State<ChatPageView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                widget.username ?? "Jimi Cooke",
+                                widget.name ?? "User Chat",
                                 style: TextStyle(color: Colors.white, fontSize: 15),
                               ),
                               Text(
                                 "online",
                                 style: TextStyle(color: Colors.white60, fontSize: 12),
                               ),
+                              Container(
+                                child: ClipRRect(
+                                  child: Container(
+                                      child: SizedBox(
+                                        child: Image.asset(
+                                          "assets/images/person1.jpg",
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      color: myColors.orange),
+                                  borderRadius: new BorderRadius.circular(50),
+                                ),
+                                height: 55,
+                                width: 55,
+                                padding: const EdgeInsets.all(0.0),
+                                decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.black26,
+                                          blurRadius: 5.0,
+                                          spreadRadius: -1,
+                                          offset: Offset(0.0, 5.0))
+                                    ]),
+                              ), // Container
                             ],
                           ),
                           Spacer(),
                           Padding(
                             padding:
                                 const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
-                            child: Container(
-                              child: ClipRRect(
-                                child: Container(
-                                    child: SizedBox(
-                                      child: Image.asset(
-                                        "assets/images/person1.jpg",
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    color: myColors.orange),
-                                borderRadius: new BorderRadius.circular(50),
-                              ),
-                              height: 55,
-                              width: 55,
-                              padding: const EdgeInsets.all(0.0),
-                              decoration: new BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black26,
-                                        blurRadius: 5.0,
-                                        spreadRadius: -1,
-                                        offset: Offset(0.0, 5.0))
-                                  ]),
-                            ),
+                            child: RaisedButton(
+                              onPressed: () {
+                                setState() {
+                                  // _isLoading = true;
+                                }
+                                print("Calling..${widget.conversation}");
+                                placeCall(widget.conversation);
+                              },
+                              elevation: 0.0,
+                              color: Colors.purple,
+                              child: Text("Call", style: TextStyle(color: Colors.white70)),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                            )
                           ),
                         ],
                       ),
@@ -213,3 +252,5 @@ class _ChatPageViewState extends State<ChatPageView> {
     );
   }
 }
+
+

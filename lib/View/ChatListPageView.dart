@@ -6,7 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:mayim/Settings.dart';
 import 'package:mayim/View/Login.dart';
-import 'package:mayim/View/Call.dart';
+import 'package:mayim/View/CallPage.dart';
 import 'package:mayim/Widget/ChatListViewItem.dart';
 import 'package:mayim/Widget/Loading.dart';
 
@@ -154,6 +154,7 @@ class _ChatListPageViewState extends State<ChatListPageView> {
                       lastMessage:
                           "Lorem ipsum dolor sit amet. Sed pharetra ante a blandit ultrices.",
                       name: online[index]["name"],
+                      id: online[index]["id"],
                       newMesssageCount: 8,
                       time: online[index]["last_login"],
                       );

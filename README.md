@@ -15,7 +15,13 @@ May-I-M as in "may instant messaging be free and unencumbered."
 
 We also intend to integrate Agora.io video and audio calling as a
 standard (optional) feature. If you like or use the code please join our
-little mitzvah and help contribute!
+little mitzvah and help contribute! Evry pull request will be
+considered.
+
+# GUIDE
+
+Follow the [guide](https://github.com/jjeffus/mayim-app/GUIDE.md) to get
+this repo setup with your app/brand.
 
 # FLUTTER CLIENT
 
@@ -24,12 +30,12 @@ This is the codebase for the Flutter app, you can find the Flutter server
 
 # FEATURES
 
-1. Rails 6
-2. [devise-jwt](https://github.com/waiting-for-dev/devise-jwt "Devise with JSON Web Tokens")
-3. Active Storage
-4. Action Cable
-5. Active Admin
-6. (optional) Heroku Deployment
+1. Simple [Flutter](https://flutter.dev/) based code instantly compilable on iOS and Android.
+2. Easy to deploy Ruby code following the [deployment
+   guide](https://github.com/jjeffus/mayim-server/GUIDE.md).
+3. Deploy to any cloud with zero restrictions.
+4. Optional [Agora.io](https://www.agora.io/) video chat.
+5. Instant [Active Admin](https://activeadmin.info/) administration control panel.
 
 # Simple Chat UI
 

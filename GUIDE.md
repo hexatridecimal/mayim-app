@@ -2,31 +2,32 @@
 
 # SETUP GUIDE
 
-First setup the Mayim server 
-[here.](https://github.com/jjeffus/mayim-server "Mayim Server Repository")
+First deploy the Mayim server 
+[here.](https://github.com/jjeffus/mayim-server/GUIDE.md "Mayim Server Guide")
 
 # CHANGE BRANDING
 
 These are the steps to update the app to your own branding.
 
-1. We use
+1. Deploy the Mayim server and set APP_SERVER in lib/Settings.dart
+2. Go to [agora.io](https://agora.io) and set your APP_ID in lib/Settings.dart
+3. We use
    [flutter_launcher_icons](https://github.com/fluttercommunity/flutter_launcher_icons)
 so place the app launcher icon you have in /graphics.
-2. Update the paths in pubspec.yaml to graphics/your_icon.png
-3. flutter pub run flutter_launcher_icons:main
-4. Change domain name globally:
+4. Update the paths in pubspec.yaml to graphics/your_icon.png
+5. flutter pub run flutter_launcher_icons:main
+6. Change domain name globally:
 
 `find . -type f -print0 | xargs -0 perl -i.bak -pe 's/may-im.com/yourapp.com/g'`
 
-5. Change package name globally:
+7. Change package name globally:
 
 `find . -type f -print0 | xargs -0 perl -i.bak -pe 's/mayim/yourapp/g'`
 
-6. After verifying this works remove the backup .bak files.
+8. After verifying this works remove the backup .bak files.
 
 `find . -name "*.bak" -type f -delete`
 
-7. Go to [agora.io](https://agora.io) and put your App ID in lib/Settings.dart
 
 # COPYRIGHT
 
