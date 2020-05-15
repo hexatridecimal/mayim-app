@@ -3,7 +3,7 @@
 # SETUP GUIDE
 
 First deploy the Mayim server 
-[here.](https://github.com/jjeffus/mayim-app/blob/master/GUIDE.md "Mayim Server Deployment Guide")
+[here.](https://github.com/jjeffus/mayim-server/blob/master/GUIDE.md "Mayim Server Deployment Guide")
 
 # CHANGE BRANDING
 
