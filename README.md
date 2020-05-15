@@ -20,7 +20,7 @@ considered.
 
 # GUIDE
 
-Follow the [guide](https://github.com/jjeffus/mayim-app/GUIDE.md) to get
+Follow the [guide](https://github.com/jjeffus/mayim-app/blob/master/GUIDE.md) to get
 this repo setup with your app/brand.
 
 # FLUTTER CLIENT
@@ -32,7 +32,7 @@ This is the codebase for the Flutter app, you can find the Flutter server
 
 1. Simple [Flutter](https://flutter.dev/) based code instantly compilable on iOS and Android.
 2. Easy to deploy Ruby code following the [deployment
-   guide](https://github.com/jjeffus/mayim-server/GUIDE.md).
+   guide](https://github.com/jjeffus/mayim-server/blob/master/GUIDE.md).
 3. Deploy to any cloud with zero restrictions.
 4. Optional [Agora.io](https://www.agora.io/) video chat.
 5. Instant [Active Admin](https://activeadmin.info/) administration control panel.
