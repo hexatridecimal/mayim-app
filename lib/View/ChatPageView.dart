@@ -5,15 +5,20 @@ import 'package:mayim/Global/Colors.dart' as myColors;
 import 'package:mayim/Widget/ReceivedMessageWidget.dart';
 import 'package:mayim/Widget/SendedMessageWidget.dart';
 import 'package:mayim/View/CallPage.dart';
+import 'package:http/http.dart' as http;
+import 'package:mayim/Settings.dart';
+import 'dart:convert';
 
 class ChatPageView extends StatefulWidget {
   final String conversation;
   final String name;
+  final String receiver_id;
 
   const ChatPageView({
     Key key,
     this.conversation,
     this.name,
+    this.receiver_id
   }) : super(key: key);
 
   @override
@@ -28,23 +33,6 @@ class _ChatPageViewState extends State<ChatPageView> {
   @override
   void initState() {
     super.initState();
-    childList.add(Align(
-        alignment: Alignment(0, 0),
-        child: Container(
-          margin: const EdgeInsets.only(top: 5.0),
-          height: 25,
-          width: 50,
-          decoration: BoxDecoration(
-              color: Colors.black12,
-              borderRadius: BorderRadius.all(
-                Radius.circular(8.0),
-              )),
-          child: Center(
-              child: Text(
-            "Today",
-            style: TextStyle(fontSize: 11),
-          )),
-        )));
     childList.add(Align(
       alignment: Alignment(1, 0),
       child: SendedMessageWidget(
@@ -62,7 +50,7 @@ class _ChatPageViewState extends State<ChatPageView> {
     childList.add(Align(
       alignment: Alignment(-1, 0),
       child: ReceivedMessageWidget(
-        content: 'Hello, Mohammad.I am fine. How are you?',
+        content: 'Hello, you .I am fine. How are you?',
         time: '22:40 PM',
       ),
     ));
@@ -96,6 +84,69 @@ class _ChatPageViewState extends State<ChatPageView> {
     );
   }
 
+  void _scrollToEnd() {
+    if (!_scrollController.hasClients) {
+      return;
+    }
+
+    var scrollPosition = _scrollController.position;
+
+    if (scrollPosition.maxScrollExtent > scrollPosition.minScrollExtent) {
+      _scrollController.animateTo(
+          scrollPosition.maxScrollExtent,
+          duration: new Duration(milliseconds: 200),
+          curve: Curves.easeOut,
+          );
+    }
+  }
+
+  postMessage() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var conversation = sharedPreferences.getString("conversation");
+    var receiver_id = sharedPreferences.getString("receiver_id");
+    Map data = {
+      'message[conversation]': conversation,
+      'message[receiver_id]': receiver_id,
+      'message[text]':  _text.text
+    };
+    var jsonResponse = null;
+    var headers = {
+      "Accept": "application/json",
+      "Authorization": sharedPreferences.getString("token")
+    };
+    print("data: ${data}");
+    print("headers: ${headers}");
+
+    var response = await http.post(APP_SERVER + "/api/v1/messages", headers: headers, body: data);
+    if(response.statusCode == 200) {
+      jsonResponse = json.decode(response.body);
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+    }
+    else {
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+    }
+  }
+
+  void sendMessage() async {
+    setState(() {
+    });
+    DateTime now = new DateTime.now();
+    String formatted ="${now.hour.toString()}:${now.minute.toString().padLeft(2,'0')}:${now.second.toString().padLeft(2,'0')}";
+    print("time: ${formatted}");
+    var say = _text.text;
+    print("say: ${say}");
+    childList.add(Align(
+      alignment: Alignment(1, 0),
+      child: SendedMessageWidget(
+        content: say,
+        time: formatted,
+      ),
+    ));
+    _scrollToEnd();
+    postMessage();
+  }
 
   @override
   void dispose() {
@@ -234,7 +285,9 @@ class _ChatPageViewState extends State<ChatPageView> {
                           // contentPadding: const EdgeInsets.symmetric(horizontal: 5.0),
                           suffixIcon: IconButton(
                             icon: Icon(Icons.send),
-                            onPressed: () {},
+                            onPressed: () {
+                              sendMessage();
+                            },
                           ),
                           border: InputBorder.none,
                           hintText: "enter your message",

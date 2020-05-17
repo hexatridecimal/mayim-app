@@ -39,6 +39,7 @@ class ChatListViewItem extends StatelessWidget {
       var conversation = getConversationName(sharedPreferences.getString("user"), id);
       print("setting conversation: ${conversation}");
       sharedPreferences.setString("conversation", conversation);
+      sharedPreferences.setString("receiver_id", id.toString());
     }
   }
 
