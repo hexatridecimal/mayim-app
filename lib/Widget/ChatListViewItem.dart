@@ -33,13 +33,14 @@ class ChatListViewItem extends StatelessWidget {
     }
   }
 
-  void setConversation(int id) async {
+  void setConversation() async {
     var sharedPreferences = await SharedPreferences.getInstance();
     if(sharedPreferences.getString("user") != null) {
       var conversation = getConversationName(sharedPreferences.getString("user"), id);
       print("setting conversation: ${conversation}");
       sharedPreferences.setString("conversation", conversation);
       sharedPreferences.setString("receiver_id", id.toString());
+      sharedPreferences.setString("receiver_name", name);
     }
   }
 
@@ -96,7 +97,7 @@ class ChatListViewItem extends StatelessWidget {
                     ],
                   ),
                   onTap: () {
-                    setConversation(id);
+                    setConversation();
                     Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -8,17 +8,17 @@ import 'package:mayim/View/CallPage.dart';
 import 'package:http/http.dart' as http;
 import 'package:mayim/Settings.dart';
 import 'dart:convert';
+import 'dart:async';
 
 class ChatPageView extends StatefulWidget {
-  final String conversation;
-  final String name;
-  final String receiver_id;
 
   const ChatPageView({
     Key key,
-    this.conversation,
-    this.name,
-    this.receiver_id
+    //this.conversation,
+    //this.name,
+    //this.receiver_id,
+    //this.receiver_name,
+    //this.my_id
   }) : super(key: key);
 
   @override
@@ -26,48 +26,87 @@ class ChatPageView extends StatefulWidget {
 }
 
 class _ChatPageViewState extends State<ChatPageView> {
+  String conversation;
+  String name;
+  String receiver_id;
+  String receiver_name;
+  String my_id;
+  SharedPreferences sharedPreferences;
+
   TextEditingController _text = new TextEditingController();
   ScrollController _scrollController = ScrollController();
   var childList = <Widget>[];
 
+  void loadMessages() async {
+    var jsonResponse = null;
+    var headers = {
+      "Accept": "application/json",
+      "Authorization": sharedPreferences.getString("token")
+    };
+    print("headers: ${headers}");
+
+    var response = await http.get(APP_SERVER + "/api/v1/messages?conversation="+conversation, headers: headers);
+    if(response.statusCode == 200) {
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      jsonResponse = json.decode(response.body);
+      for ( var message in jsonResponse ) {
+        print("message: ${message}");
+        print("message['user_id']: ${message['user_id']}: my_id: ${my_id}");
+        if (message['user_id'].toString() == my_id) {
+          childList.add(Align(
+                alignment: Alignment(1, 0),
+                child: new SendedMessageWidget(
+                  key: Key(message['id'].toString()+message['created_at']),
+                  content: message['text'],
+                  time: '21:36 PM',
+                  ),
+          ));
+        } else {
+          childList.add(Align(
+            alignment: Alignment(-1, 0),
+            child: new ReceivedMessageWidget(
+              content: message['text'],
+              time: '22:40 PM',
+              key: Key(message['id'].toString()+message['created_at']),
+            ),
+          ));
+        }
+        Timer(Duration(milliseconds: 100), () {
+          _scrollController.animateTo(
+              _scrollController.position.maxScrollExtent,
+              curve: Curves.easeOut,
+              duration: const Duration(milliseconds: 750),
+              );
+        });
+      }
+    } else {
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+    }
+  }
+
+
+  @override
+  void loadPrefs() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    conversation = sharedPreferences.getString("conversation");
+    my_id = sharedPreferences.getString("my_id");
+    receiver_id = sharedPreferences.getString("receiver_id");
+    receiver_name = sharedPreferences.getString("receiver_name");
+  }
+
   @override
   void initState() {
     super.initState();
-    childList.add(Align(
-      alignment: Alignment(1, 0),
-      child: SendedMessageWidget(
-        content: 'Hello',
-        time: '21:36 PM',
-      ),
-    ));
-    childList.add(Align(
-      alignment: Alignment(1, 0),
-      child: SendedMessageWidget(
-        content: 'How are you? What are you doing?',
-        time: '21:36 PM',
-      ),
-    ));
-    childList.add(Align(
-      alignment: Alignment(-1, 0),
-      child: ReceivedMessageWidget(
-        content: 'Hello, you .I am fine. How are you?',
-        time: '22:40 PM',
-      ),
-    ));
-    childList.add(Align(
-      alignment: Alignment(1, 0),
-      child: SendedMessageWidget(
-        content:
-            'I am good. Can you do something for me? I need your help my bro.',
-        time: '22:40 PM',
-      ),
-    ));
+    loadPrefs();
+    loadMessages();
   }
 
   Future<void> _handleCameraAndMic() async {
     await PermissionHandler().requestPermissions(
-      [PermissionGroup.camera, PermissionGroup.microphone],
-    );
+        [PermissionGroup.camera, PermissionGroup.microphone],
+        );
   }
 
   Future<void> placeCall(String conversation) async {
@@ -187,10 +226,10 @@ class _ChatPageViewState extends State<ChatPageView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                widget.name ?? "User Chat",
+                                receiver_name ?? "User Chat",
                                 style: TextStyle(color: Colors.white, fontSize: 15),
                               ),
-                              Text(
+                              /*Text(
                                 "online",
                                 style: TextStyle(color: Colors.white60, fontSize: 12),
                               ),
@@ -220,6 +259,7 @@ class _ChatPageViewState extends State<ChatPageView> {
                                           offset: Offset(0.0, 5.0))
                                     ]),
                               ), // Container
+                              */
                             ],
                           ),
                           Spacer(),
@@ -231,8 +271,8 @@ class _ChatPageViewState extends State<ChatPageView> {
                                 setState() {
                                   // _isLoading = true;
                                 }
-                                print("Calling..${widget.conversation}");
-                                placeCall(widget.conversation);
+                                print("Calling..${conversation}");
+                                placeCall(conversation);
                               },
                               elevation: 0.0,
                               color: Colors.purple,

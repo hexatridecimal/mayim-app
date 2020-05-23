@@ -72,7 +72,15 @@ class _ChatListPageViewState extends State<ChatListPageView> {
         print('Response status: ${response.statusCode}');
         print('Response body: ${response.body}');
         print('Response authorization: ${response.headers['authorization']}');
-        online = json.decode(response.body);
+        if (response.statusCode == 401) {
+          sharedPreferences.remove('token');
+          sharedPreferences.remove('conversation');
+          sharedPreferences.remove('receiver_id');
+          sharedPreferences.remove('user');
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => LoginPage()), (Route<dynamic> route) => false);
+        } else {
+          online = json.decode(response.body);
+        }
       });
     }
   }
