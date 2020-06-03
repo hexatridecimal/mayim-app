@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'message.dart';
+part of 'conversation.dart';
 
 // **************************************************************************
 // DataGenerator
@@ -8,8 +8,8 @@ part of 'message.dart';
 
 // ignore_for_file: unused_local_variable
 // ignore_for_file: always_declare_return_types
-class _$MessageRepository extends Repository<Message> {
-  _$MessageRepository(LocalAdapter<Message> adapter,
+class _$ConversationRepository extends Repository<Conversation> {
+  _$ConversationRepository(LocalAdapter<Conversation> adapter,
       {bool remote, bool verbose})
       : super(adapter, remote: remote, verbose: verbose);
 
@@ -22,25 +22,28 @@ class _$MessageRepository extends Repository<Message> {
   }
 }
 
-class $MessageRepository extends _$MessageRepository
-    with StandardJSONAdapter<Message>, JSONPlaceholderAdapter<Message> {
-  $MessageRepository(LocalAdapter<Message> adapter, {bool remote, bool verbose})
+class $ConversationRepository extends _$ConversationRepository
+    with
+        StandardJSONAdapter<Conversation>,
+        JSONPlaceholderAdapter<Conversation> {
+  $ConversationRepository(LocalAdapter<Conversation> adapter,
+      {bool remote, bool verbose})
       : super(adapter, remote: remote, verbose: verbose);
 }
 
 // ignore: must_be_immutable, unused_local_variable
-class $MessageLocalAdapter extends LocalAdapter<Message> {
-  $MessageLocalAdapter(DataManager manager, {List<int> encryptionKey, box})
+class $ConversationLocalAdapter extends LocalAdapter<Conversation> {
+  $ConversationLocalAdapter(DataManager manager, {List<int> encryptionKey, box})
       : super(manager, encryptionKey: encryptionKey, box: box);
 
   @override
   deserialize(map) {
-    return _$MessageFromJson(map);
+    return _$ConversationFromJson(map);
   }
 
   @override
   serialize(model) {
-    final map = _$MessageToJson(model);
+    final map = _$ConversationToJson(model);
 
     return map;
   }
@@ -56,20 +59,13 @@ class $MessageLocalAdapter extends LocalAdapter<Message> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-Message _$MessageFromJson(Map<String, dynamic> json) {
-  return Message(
+Conversation _$ConversationFromJson(Map<String, dynamic> json) {
+  return Conversation(
     id: json['id'] as int,
-    userId: json['userId'] as int,
-    conversationId: json['conversationId'] as int,
-    timestamp: json['timestamp'] as int,
-    message: json['message'] as String,
   );
 }
 
-Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
+Map<String, dynamic> _$ConversationToJson(Conversation instance) =>
+    <String, dynamic>{
       'id': instance.id,
-      'userId': instance.userId,
-      'conversationId': instance.conversationId,
-      'timestamp': instance.timestamp,
-      'message': instance.message,
     };
