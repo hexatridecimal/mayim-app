@@ -8,7 +8,7 @@ abstract class AuthenticationState extends Equatable {
 
 class AuthenticationInitial extends AuthenticationState {}
 class Authenticated extends AuthenticationState {
-  final String token;
+  final AuthorizationToken token;
   const Authenticated({@required this.token});
   @override
   List<Object> get props => [token];
