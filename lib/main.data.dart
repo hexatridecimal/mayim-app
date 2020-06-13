@@ -9,8 +9,10 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import 'package:mayim/data/message.dart';
-import 'package:mayim/data/user.dart';
+import 'package:mayim/data/authorization_token.dart';
 import 'package:mayim/data/conversation.dart';
+import 'package:mayim/data/user.dart';
+import 'package:mayim/data/current_user.dart';
 
 extension FlutterData on DataManager {
 
@@ -25,13 +27,21 @@ extension FlutterData on DataManager {
     injection.register(messageLocalAdapter);
     injection.register<Repository<Message>>($MessageRepository(messageLocalAdapter, remote: remote, verbose: verbose));
 
-    final userLocalAdapter = await $UserLocalAdapter(manager, encryptionKey: encryptionKey).init();
-    injection.register(userLocalAdapter);
-    injection.register<Repository<User>>($UserRepository(userLocalAdapter, remote: remote, verbose: verbose));
+    final authorizationtokenLocalAdapter = await $AuthorizationTokenLocalAdapter(manager, encryptionKey: encryptionKey).init();
+    injection.register(authorizationtokenLocalAdapter);
+    injection.register<Repository<AuthorizationToken>>($AuthorizationTokenRepository(authorizationtokenLocalAdapter, remote: remote, verbose: verbose));
 
     final conversationLocalAdapter = await $ConversationLocalAdapter(manager, encryptionKey: encryptionKey).init();
     injection.register(conversationLocalAdapter);
     injection.register<Repository<Conversation>>($ConversationRepository(conversationLocalAdapter, remote: remote, verbose: verbose));
+
+    final userLocalAdapter = await $UserLocalAdapter(manager, encryptionKey: encryptionKey).init();
+    injection.register(userLocalAdapter);
+    injection.register<Repository<User>>($UserRepository(userLocalAdapter, remote: remote, verbose: verbose));
+
+    final currentuserLocalAdapter = await $CurrentUserLocalAdapter(manager, encryptionKey: encryptionKey).init();
+    injection.register(currentuserLocalAdapter);
+    injection.register<Repository<CurrentUser>>($CurrentUserRepository(currentuserLocalAdapter, remote: remote, verbose: verbose));
 
 
     if (also != null) {
@@ -46,8 +56,10 @@ extension FlutterData on DataManager {
   List<SingleChildWidget> get providers {
   return [
     Provider<Repository<Message>>.value(value: locator<Repository<Message>>()),
-Provider<Repository<User>>.value(value: locator<Repository<User>>()),
+Provider<Repository<AuthorizationToken>>.value(value: locator<Repository<AuthorizationToken>>()),
 Provider<Repository<Conversation>>.value(value: locator<Repository<Conversation>>()),
+Provider<Repository<User>>.value(value: locator<Repository<User>>()),
+Provider<Repository<CurrentUser>>.value(value: locator<Repository<CurrentUser>>()),
   ];
 }
 
@@ -69,13 +81,25 @@ List<SingleChildWidget> dataProviders(Future<Directory> Function() directory, {b
     ),
 
 
-    ProxyProvider<DataManager, Repository<User>>(
+    ProxyProvider<DataManager, Repository<AuthorizationToken>>(
       lazy: false,
-      update: (_, m, __) => m?.locator<Repository<User>>(),
+      update: (_, m, __) => m?.locator<Repository<AuthorizationToken>>(),
     ),
 
 
     ProxyProvider<DataManager, Repository<Conversation>>(
       lazy: false,
       update: (_, m, __) => m?.locator<Repository<Conversation>>(),
+    ),
+
+
+    ProxyProvider<DataManager, Repository<User>>(
+      lazy: false,
+      update: (_, m, __) => m?.locator<Repository<User>>(),
+    ),
+
+
+    ProxyProvider<DataManager, Repository<CurrentUser>>(
+      lazy: false,
+      update: (_, m, __) => m?.locator<Repository<CurrentUser>>(),
     ),];

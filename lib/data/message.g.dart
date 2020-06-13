@@ -14,16 +14,21 @@ class _$MessageRepository extends Repository<Message> {
       : super(adapter, remote: remote, verbose: verbose);
 
   @override
-  get relationshipMetadata => {'HasMany': {}, 'BelongsTo': {}};
+  get relationshipMetadata => {
+        'HasMany': {},
+        'BelongsTo': {'conversation': 'conversations'}
+      };
 
   @override
   Repository repositoryFor(String type) {
-    return <String, Repository>{}[type];
+    return <String, Repository>{
+      'conversations': manager.locator<Repository<Conversation>>()
+    }[type];
   }
 }
 
 class $MessageRepository extends _$MessageRepository
-    with StandardJSONAdapter<Message>, JSONPlaceholderAdapter<Message> {
+    with StandardJSONAdapter<Message>, BaseAdapter<Message> {
   $MessageRepository(LocalAdapter<Message> adapter, {bool remote, bool verbose})
       : super(adapter, remote: remote, verbose: verbose);
 }
@@ -35,21 +40,30 @@ class $MessageLocalAdapter extends LocalAdapter<Message> {
 
   @override
   deserialize(map) {
+    map['conversation'] = {
+      '_': [map['conversation'], manager]
+    };
     return _$MessageFromJson(map);
   }
 
   @override
   serialize(model) {
     final map = _$MessageToJson(model);
-
+    map['conversation'] = model.conversation?.toJson();
     return map;
   }
 
   @override
-  setOwnerInRelationships(owner, model) {}
+  setOwnerInRelationships(owner, model) {
+    model.conversation?.owner = owner;
+  }
 
   @override
-  void setInverseInModel(inverse, model) {}
+  void setInverseInModel(inverse, model) {
+    if (inverse is DataId<Conversation>) {
+      model.conversation?.inverse = inverse;
+    }
+  }
 }
 
 // **************************************************************************
@@ -60,7 +74,9 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
   return Message(
     id: json['id'] as int,
     userId: json['userId'] as int,
-    conversationId: json['conversationId'] as int,
+    conversation: json['conversation'] == null
+        ? null
+        : BelongsTo.fromJson(json['conversation'] as Map<String, dynamic>),
     timestamp: json['timestamp'] as int,
     message: json['message'] as String,
   );
@@ -69,7 +85,7 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,
-      'conversationId': instance.conversationId,
+      'conversation': instance.conversation,
       'timestamp': instance.timestamp,
       'message': instance.message,
     };

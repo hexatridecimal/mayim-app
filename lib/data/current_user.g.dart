@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'authorization_token.dart';
+part of 'current_user.dart';
 
 // **************************************************************************
 // DataGenerator
@@ -8,8 +8,8 @@ part of 'authorization_token.dart';
 
 // ignore_for_file: unused_local_variable
 // ignore_for_file: always_declare_return_types
-class _$AuthorizationTokenRepository extends Repository<AuthorizationToken> {
-  _$AuthorizationTokenRepository(LocalAdapter<AuthorizationToken> adapter,
+class _$CurrentUserRepository extends Repository<CurrentUser> {
+  _$CurrentUserRepository(LocalAdapter<CurrentUser> adapter,
       {bool remote, bool verbose})
       : super(adapter, remote: remote, verbose: verbose);
 
@@ -22,32 +22,30 @@ class _$AuthorizationTokenRepository extends Repository<AuthorizationToken> {
   }
 }
 
-class $AuthorizationTokenRepository extends _$AuthorizationTokenRepository
+class $CurrentUserRepository extends _$CurrentUserRepository
     with
-        StandardJSONAdapter<AuthorizationToken>,
-        BaseAdapter<AuthorizationToken>,
-        LocalCacheAdapter<AuthorizationToken>,
-        AuthenticationAdapter,
-        OfflineAdapter<AuthorizationToken> {
-  $AuthorizationTokenRepository(LocalAdapter<AuthorizationToken> adapter,
+        StandardJSONAdapter<CurrentUser>,
+        BaseAdapter<CurrentUser>,
+        CurrentUserAdapter,
+        OfflineAdapter<CurrentUser> {
+  $CurrentUserRepository(LocalAdapter<CurrentUser> adapter,
       {bool remote, bool verbose})
       : super(adapter, remote: remote, verbose: verbose);
 }
 
 // ignore: must_be_immutable, unused_local_variable
-class $AuthorizationTokenLocalAdapter extends LocalAdapter<AuthorizationToken> {
-  $AuthorizationTokenLocalAdapter(DataManager manager,
-      {List<int> encryptionKey, box})
+class $CurrentUserLocalAdapter extends LocalAdapter<CurrentUser> {
+  $CurrentUserLocalAdapter(DataManager manager, {List<int> encryptionKey, box})
       : super(manager, encryptionKey: encryptionKey, box: box);
 
   @override
   deserialize(map) {
-    return _$AuthorizationTokenFromJson(map);
+    return _$CurrentUserFromJson(map);
   }
 
   @override
   serialize(model) {
-    final map = _$AuthorizationTokenToJson(model);
+    final map = _$CurrentUserToJson(model);
 
     return map;
   }
@@ -63,15 +61,15 @@ class $AuthorizationTokenLocalAdapter extends LocalAdapter<AuthorizationToken> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-AuthorizationToken _$AuthorizationTokenFromJson(Map<String, dynamic> json) {
-  return AuthorizationToken(
+CurrentUser _$CurrentUserFromJson(Map<String, dynamic> json) {
+  return CurrentUser(
     id: json['id'] as int,
-    token: json['token'] as String,
+    userId: json['userId'] as int,
   );
 }
 
-Map<String, dynamic> _$AuthorizationTokenToJson(AuthorizationToken instance) =>
+Map<String, dynamic> _$CurrentUserToJson(CurrentUser instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'token': instance.token,
+      'userId': instance.userId,
     };
