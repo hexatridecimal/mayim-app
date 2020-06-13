@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
             }
             if (state is AuthenticationInitial) {
               final tokenRepository =
-                  context.read<Repository<AuthorizationToken>>();
+                  context.watch<Repository<AuthorizationToken>>();
               //ignore: close_sinks
               final authBloc = BlocProvider.of<AuthenticationBloc>(context);
               authBloc.add(AppStarted(tokenRepository: tokenRepository));
