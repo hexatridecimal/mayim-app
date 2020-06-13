@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mayim/Global/Colors.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({Key key}) : super(key: key);
@@ -7,8 +6,12 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: backGround,
-      child: Image.asset('graphics/mayim_logo.png'),
-    );
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.blue, Colors.teal])),
+        constraints: BoxConstraints.expand(),
+        child: Image.asset('graphics/mayim_logo.png'));
   }
 }
