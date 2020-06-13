@@ -11,6 +11,7 @@ import 'package:mayim/Widget/ChatListViewItem.dart';
 import 'package:mayim/Widget/Loading.dart';
 
 class ChatListPageView extends StatefulWidget {
+  const ChatListPageView({Key key}) : super(key: key);
   @override
   _ChatListPageViewState createState() => _ChatListPageViewState();
 }

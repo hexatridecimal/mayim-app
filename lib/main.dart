@@ -53,27 +53,41 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: myColors.blue,
         ),
-        home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-          builder: (context, state) {
-            if (context.watch<DataManager>() == null) {
-              return SplashPage();
-            }
-            if (state is AuthenticationInitial) {
-              final tokenRepository =
-                  context.watch<Repository<AuthorizationToken>>();
-              //ignore: close_sinks
-              final authBloc = BlocProvider.of<AuthenticationBloc>(context);
-              authBloc.add(AppStarted(tokenRepository: tokenRepository));
-              return SplashPage(); 
-            }
-            if (state is Unauthenticated) {
-              return LoginPage();
-            }
-            if (state is Authenticated) {
-              return ChatListPageView();
-            }
-            return SplashPage();
-          },
-        ));
+        home: AuthenticationBuilder());
+  }
+}
+
+class AuthenticationBuilder extends StatelessWidget {
+  const AuthenticationBuilder({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
+      builder: (context, state) {
+        Widget page;
+        page = SplashPage(key: UniqueKey());
+        if (context.watch<DataManager>() != null) {
+          if (state is AuthenticationInitial) {
+            final tokenRepository =
+                context.watch<Repository<AuthorizationToken>>();
+            //ignore: close_sinks
+            final authBloc = BlocProvider.of<AuthenticationBloc>(context);
+            authBloc.add(AppStarted(tokenRepository: tokenRepository));
+          }
+          if (state is Unauthenticated) {
+            page = LoginPage(key: UniqueKey());
+          }
+          if (state is Authenticated) {
+            page = ChatListPageView(key: UniqueKey());
+          }
+        }
+        return AnimatedSwitcher(
+          duration: Duration(milliseconds: 500),
+          child: page,
+        );
+      },
+    );
   }
 }

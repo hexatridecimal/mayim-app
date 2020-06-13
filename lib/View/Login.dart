@@ -8,6 +8,7 @@ import 'package:mayim/Settings.dart';
 import 'package:mayim/View/ChatListPageView.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({Key key}) : super(key: key);
   @override
   _LoginPageState createState() => _LoginPageState();
 }
