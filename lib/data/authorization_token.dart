@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_data/flutter_data.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -9,18 +11,27 @@ part 'authorization_token.g.dart';
 mixin AuthenticationAdapter on Repository<AuthorizationToken> {
   Future<void> login(
       {@required String email, @required String password}) async {
-    final response = await withHttpClient(
-        (client) => client.post("$baseUrl/api/login", headers: headers, body: {
-              "email": email,
-              "password": password,
-            }));
+    final Map<String, String> credentials = {
+      "email": email,
+      "password": password,
+    };
+    final response = await withHttpClient((client) => client.post(
+        "$baseUrl/api/login",
+        headers: Map<String, String>.from(headers),
+        body: jsonEncode(credentials)));
     final token = withResponse(response, (data) => deserialize(data));
     save(token);
   }
 }
 
 @JsonSerializable()
-@DataRepository([StandardJSONAdapter, BaseAdapter, LocalCacheAdapter, AuthenticationAdapter, OfflineAdapter])
+@DataRepository([
+  StandardJSONAdapter,
+  BaseAdapter,
+  LocalCacheAdapter,
+  AuthenticationAdapter,
+  OfflineAdapter
+])
 class AuthorizationToken extends DataSupport<AuthorizationToken> {
   @override
   final int id;

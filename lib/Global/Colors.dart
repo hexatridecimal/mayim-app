@@ -34,3 +34,9 @@ const MaterialColor orange = const MaterialColor(0xFFFF8C00, const <int, Color>{
 // Color blue = const Color(0xFF54C5E6);
 Color backGround = const Color(0xFFFbFbFb);
 // Color backGround = const Color(0xFFF2F2F2);
+
+const BoxDecoration bgGradient = const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.blue, Colors.teal]));

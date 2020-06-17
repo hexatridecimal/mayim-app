@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -27,8 +28,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         await (repository as AuthenticationAdapter)
             .login(email: event.email, password: event.password);
         yield LoginInitial();
-      } catch (e) {
-        yield LoginFailure(error: e.toString());
+      } on SocketException catch (_) {
+        yield LoginFailure(error: "Login failed: Connection failure");
       }
     }
   }

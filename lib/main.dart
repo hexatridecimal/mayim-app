@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_data/flutter_data.dart';
 import 'package:mayim/Global/Colors.dart' as myColors;
-import 'package:mayim/View/Login.dart';
+import 'package:mayim/View/Login/Login.dart';
 import 'package:mayim/View/ChatListPageView.dart';
 import 'package:mayim/View/Splash.dart';
 import 'package:mayim/bloc/authentication_bloc.dart';
