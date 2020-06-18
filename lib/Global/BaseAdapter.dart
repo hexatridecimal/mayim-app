@@ -4,6 +4,7 @@ import 'package:flutter_data/flutter_data.dart';
 import 'package:mayim/bloc/authentication_bloc.dart';
 
 mixin BaseAdapter<T extends DataSupport<T>> on StandardJSONAdapter<T> {
+  static const bool _emulatedEnvironment = true;
   @override
   get headers {
     // ignore: close_sinks
@@ -22,7 +23,12 @@ mixin BaseAdapter<T extends DataSupport<T>> on StandardJSONAdapter<T> {
   }
 
   @override
-  String get baseUrl => "http://127.0.0.1:3000/api/";
+  String get baseUrl {
+    if (_emulatedEnvironment) {
+      return "http://10.0.2.2:3000/api/v1/";
+    }
+    return "http://127.0.0.1:3000/api/v1/";
+  }
 
   @override
   Future<List<T>> findAll({bool remote, Map<String, dynamic> params, Map<String, dynamic> headers}) async {
