@@ -12,6 +12,15 @@ class _LoginPageFormState extends State<LoginPageForm> {
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
 
+  @override
+  void initState() { 
+    super.initState();
+    final state = context.read<LoginState>();
+    if (state is LoginFailure) {
+      emailController.text = state.email;
+    }  
+  }
+
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
