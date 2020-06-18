@@ -29,7 +29,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             .login(email: event.email, password: event.password);
         yield LoginInitial();
       } on SocketException catch (_) {
-        yield LoginFailure(error: "Login failed: Connection failure");
+        yield LoginFailure(
+            email: event.email, error: "Login failed: Connection failure");
+      } on DataException catch (_) {
+        yield LoginFailure(email: event.email, error: "Login failed: Wrong credentials");
       }
     }
   }
