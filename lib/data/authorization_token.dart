@@ -12,16 +12,24 @@ mixin AuthenticationAdapter on Repository<AuthorizationToken> {
   Future<void> login(
       {@required String email, @required String password}) async {
     final Map<String, String> credentials = {
-      "email": email,
-      "password": password,
+      "user[email]": email,
+      "user[password]": password,
     };
     final response = await withHttpClient((client) => client.post(
-        "$baseUrl/api/login",
+        "$baseUrl/login",
         headers: Map<String, String>.from(headers),
         body: jsonEncode(credentials)));
     final token = withResponse(response, (data) => deserialize(data));
     save(token);
   }
+
+  @override
+  Future<List<AuthorizationToken>> findAll({bool remote, Map<String, dynamic> params, Map<String, dynamic> headers}) {
+    return super.findAll(remote: false);
+  }
+  
+  @override
+  String get baseUrl => super.baseUrl.replaceFirst(RegExp(r'api/v1/'), '');
 }
 
 @JsonSerializable()
