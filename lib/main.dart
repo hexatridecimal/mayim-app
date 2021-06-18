@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mayim/Global/Colors.dart' as myColors;
-import 'package:mayim/View/Login.dart';
 import 'package:mayim/View/ChatListPageView.dart';
+
+import 'Screens/SignUp_screen.dart';
 
 void main() => runApp(MyApp());
 
