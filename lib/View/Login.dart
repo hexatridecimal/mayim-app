@@ -39,14 +39,15 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   signIn(String email, pass) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     Map data = {
       'user[email]': email,
       'user[password]': pass
     };
     var jsonResponse = null;
-
-    var response = await http.post(APP_SERVER + "/login", body: data);
+    http.Response response = await http.post(Uri.parse(APP_SERVER + "/login"), body: data);
+    // var response = await http.post(APP_SERVER + "/login", body: jsonEncode(data),);
     if(response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
       print('Response status: ${response.statusCode}');
@@ -54,12 +55,13 @@ class _LoginPageState extends State<LoginPage> {
       print('Response authorization: ${response.headers['authorization']}');
       if(response.headers['authorization'] != null) {
         setState(() {
-          _isLoading = false;
+        _isLoading = false;
         });
         sharedPreferences.setString("token", response.headers['authorization']);
         sharedPreferences.setString("user", response.body);
         sharedPreferences.setString("my_id", jsonResponse['id'].toString());
         Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => ChatListPageView()), (Route<dynamic> route) => false);
+
       }
     }
     else {
@@ -78,10 +80,10 @@ class _LoginPageState extends State<LoginPage> {
       margin: EdgeInsets.only(top: 15.0),
       child: RaisedButton(
         onPressed: emailController.text == "" || passwordController.text == "" ? null : () {
-          setState(() {
-            _isLoading = true;
-          });
-          signIn(emailController.text, passwordController.text);
+          // setState(() {
+          //   _isLoading = true;
+          // });
+          signIn(emailController.text.toString(), passwordController.text.toString());
         },
         elevation: 0.0,
         color: Colors.purple,
@@ -128,6 +130,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
 
   Container headerSection() {
     return Container(

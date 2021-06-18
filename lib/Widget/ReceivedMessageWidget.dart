@@ -1,5 +1,4 @@
-
-import 'package:flutter/material.dart';
+import  'package:flutter/material.dart';
 import 'package:mayim/Global/Colors.dart' as myColors;
 
 class ReceivedMessageWidget extends StatelessWidget {

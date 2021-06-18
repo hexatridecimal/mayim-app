@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mayim/Global/Colors.dart' as myColors;
+import 'package:mayim/Screens/SignUp_screen.dart';
+import 'package:mayim/Utils/Constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:mayim/Settings.dart';
 import 'package:mayim/View/Login.dart';
-import 'package:mayim/View/CallPage.dart';
 import 'package:mayim/Widget/ChatListViewItem.dart';
 import 'package:mayim/Widget/Loading.dart';
 
@@ -28,16 +29,16 @@ class _ChatListPageViewState extends State<ChatListPageView> {
     getOnlineUsers();
 
     Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
+      // setState(() {
         isLoading = false;
-      });
+      // });
     });
   }
 
   signOut() async {
     sharedPreferences = await SharedPreferences.getInstance();
     if(sharedPreferences.getString("token") != null) {
-      // userProfile = json.decode(sharedPreferences.getString("user"));
+      userProfile = json.decode(sharedPreferences.getString("user"));
       var response = await http.delete(
           Uri.encodeFull(APP_SERVER + "/logout"),
           headers: {
@@ -58,8 +59,11 @@ class _ChatListPageViewState extends State<ChatListPageView> {
 
   getOnlineUsers() async {
     sharedPreferences = await SharedPreferences.getInstance();
+    print('Token is ${sharedPreferences.getString("token")}');
     if(sharedPreferences.getString("token") != null && sharedPreferences.getString("user") != null) {
+      print('New flutter 1');
       userProfile = json.decode(sharedPreferences.getString("user"));
+      print('New flutter 2');
       var response = await http.get(
           Uri.encodeFull(APP_SERVER + "/api/v1/users"),
           headers: {
@@ -67,7 +71,7 @@ class _ChatListPageViewState extends State<ChatListPageView> {
             "Authorization": sharedPreferences.getString("token")
           }
       );
-
+      print('New flutter');
       this.setState(() {
         print('Response status: ${response.statusCode}');
         print('Response body: ${response.body}');
@@ -116,8 +120,9 @@ class _ChatListPageViewState extends State<ChatListPageView> {
   checkLoginStatus() async {
     sharedPreferences = await SharedPreferences.getInstance();
     if(sharedPreferences.getString("token") == null) {
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => LoginPage()), (Route<dynamic> route) => false);
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => SignupScreen()), (Route<dynamic> route) => false);
     }
+    Constant.token = sharedPreferences.getString("token");
   }
 
   @override
