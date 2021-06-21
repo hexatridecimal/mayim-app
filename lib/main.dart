@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mayim/Global/Colors.dart' as myColors;
 import 'package:mayim/View/ChatListPageView.dart';
 
+import 'Example.dart';
 import 'Screens/SignUp_screen.dart';
 
 void main() => runApp(MyApp());
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: myColors.blue,
       ),
-      home: ChatListPageView(),
+      home: SignupScreen(),
+      // home: ChatListPageView(),
     );
   }
 }

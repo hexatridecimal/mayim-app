@@ -61,9 +61,7 @@ class _ChatListPageViewState extends State<ChatListPageView> {
     sharedPreferences = await SharedPreferences.getInstance();
     print('Token is ${sharedPreferences.getString("token")}');
     if(sharedPreferences.getString("token") != null && sharedPreferences.getString("user") != null) {
-      print('New flutter 1');
       userProfile = json.decode(sharedPreferences.getString("user"));
-      print('New flutter 2');
       var response = await http.get(
           Uri.encodeFull(APP_SERVER + "/api/v1/users"),
           headers: {
